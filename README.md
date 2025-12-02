@@ -63,5 +63,13 @@ This will start a lightweight WebSocket server on ws://localhost:4001 which the 
 Deployment / CI
 - A GitHub Actions workflow was added to build and publish the `dist/` folder to GitHub Pages on pushes to `main` (.github/workflows/deploy.yml). The site will be served as a static website from the generated `dist` build.
 
+Netlify (netlify.app)
+- I added a GitHub Actions workflow at `.github/workflows/deploy-frontend-netlify.yml` so you can publish to Netlify automatically.
+- To enable automatic deployment to Netlify you need two repository secrets:
+	- `NETLIFY_AUTH_TOKEN` — a Netlify personal access token. Create one in Netlify under User settings → Applications → Personal access tokens.
+	- `NETLIFY_SITE_ID` — your Netlify site ID (from Site settings → General -> Site details).
+
+After you add those two secrets to GitHub (Repository → Settings → Secrets → Actions) pushes to `main` will trigger the Netlify deploy job which will upload the build in `dist/` to your Netlify site.
+
 If you want to host the backend (websocket server) you'll need a separate hosting target (Railway, Fly, Fly.io, Render or similar) — I can add a deploy workflow for that if you want.
 
