@@ -1,0 +1,29 @@
+name: Deploy server to Railway (optional)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'server/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RAILWAY_TOKEN && secrets.RAILWAY_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq and curl
+        run: sudo apt-get update && sudo apt-get install -y jq curl
+
+      - name: Trigger Railway deployment
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+        run: |
+          echo "Triggering Railway deploy for project $RAILWAY_PROJECT_ID"
+          # Railway's API can accept a request to create or redeploy the service depending on configuration
+          curl -s -X POST "https://backboard.railway.app/project/$RAILWAY_PROJECT_ID/deployments" \
+            -H "Authorization: Bearer $RAILWAY_TOKEN" \
+            -H 'Content-Type: application/json' \
+            -d '{"type":"SERVICE_DEPLOYMENT"}' | jq .

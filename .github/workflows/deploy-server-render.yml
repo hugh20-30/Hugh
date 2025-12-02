@@ -1,0 +1,33 @@
+name: Deploy websocket server to Render (optional)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'server/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Render (requires secrets)
+        if: ${{ secrets.RENDER_API_KEY && secrets.RENDER_SERVICE_ID }}
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          echo "Triggering Render deploy..."
+          # This uses Render's API to trigger manual deploy of the service from latest image in GHCR
+          curl -X POST \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"serviceId":"'$RENDER_SERVICE_ID'"}' \
+            https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys
+
+      - name: Explain missing secrets
+        if: ${{ !secrets.RENDER_API_KEY || !secrets.RENDER_SERVICE_ID }}
+        run: |
+          echo "RENDER_API_KEY or RENDER_SERVICE_ID not set — add these repository secrets to trigger automatic deploys."

@@ -1,0 +1,27 @@
+{
+  "name": "hugh-games",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A small website that hosts two game prototypes: Cookie Clicker (incremental) and a browser FPS demo.",
+  
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.158.0",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.4.2",
+    "vite": "^5.0.0"
+  }
+  ,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5174",
+    "start:server": "node server/ws-server.js"
+  }
+}
