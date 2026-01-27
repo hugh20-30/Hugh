@@ -8,7 +8,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.158.0",
-    "ws": "^8.13.0"
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
